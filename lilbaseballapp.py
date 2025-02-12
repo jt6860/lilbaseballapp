@@ -55,6 +55,8 @@ def get_pitch_stats(season):
                 'Team': player['Team'],
                 'WAR': player['WAR'],
                 'IP': player['IP'],
+                'G': player['G'],
+                'AIPpG': player['IP']/player['G'],
                 'ERA': player['ERA'],
                 'W': player['W'],
                 'L': player['L'],

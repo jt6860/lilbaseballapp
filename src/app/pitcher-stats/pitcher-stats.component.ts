@@ -51,4 +51,12 @@ export class PitcherStatsComponent implements OnInit {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortData();
   }
+
+  isStatExceptional(stat: number, threshold: number) {
+    return stat >= threshold;
+  }
+
+  inningsPitchedPerGame (inningsPitched: number, gamesPlayed: number): number {
+    return inningsPitched / gamesPlayed
+  }
 }

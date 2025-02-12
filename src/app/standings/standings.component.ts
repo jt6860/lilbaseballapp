@@ -56,4 +56,8 @@ export class StandingsComponent implements OnInit {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortData();
   }
+
+  isStatExceptional(stat: number, threshold: number) {
+    return stat >= threshold;
+  }
 }

@@ -26,6 +26,8 @@ export interface PitcherStats {
   team: string;
   WAR: number,
   IP: number,
+  G: number,
+  AIPpG: number,
   ERA: number,
   W: number,
   L: number,

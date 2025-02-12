@@ -16,8 +16,8 @@
     <tbody>
       <tr *ngFor="let team of sortedStandings">
         <td>{{ team.Team }}</td>
-        <td>{{ team.W }}</td> 
-        <td>{{ team.L }}</td> 
+        <td><span class="{{ isStatExceptional(team.W, 81) ? 'good-stat' : 'bad-stat' }}">{{ team.W }}</span></td> 
+        <td><span class="{{ isStatExceptional(team.L, 82) ? 'bad-stat' : 'good-stat' }}">{{ team.L }}</span></td> 
       </tr>
     </tbody>
   </table>

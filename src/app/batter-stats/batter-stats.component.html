@@ -26,16 +26,16 @@
       <tr *ngFor="let player of sortedBatters">
         <td>{{ player.name }}</td>
         <td>{{ player.Team }}</td>
-        <td>{{ player.WAR }}</td> 
-        <td>{{ player.OPS }}</td> 
-        <td>{{ player.OBP }}</td> 
-        <td>{{ player.SLG }}</td> 
-        <td>{{ player.PA }}</td> 
-        <td>{{ player.H }}</td> 
-        <td>{{ player.AVG | number:'1.3-3' }}</td> 
-        <td>{{ player.HR }}</td>
-        <td>{{ player.RBI }}</td>
-        <td>{{ player.SB }}</td> 
+        <td><span class="{{ isStatExceptional(player.WAR, 3) ? 'good-stat' : '' }}">{{ player.WAR }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.OPS, .800) ? 'good-stat' : '' }}">{{ player.OPS }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.OBP, .333) ? 'good-stat' : '' }}">{{ player.OBP }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.SLG, .500) ? 'good-stat' : '' }}">{{ player.SLG }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.PA, 600) ? 'good-stat' : '' }}">{{ player.PA }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.H, 175) ? 'good-stat' : '' }}">{{ player.H }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.AVG, .265) ? 'good-stat' : 'bad-stat' }}">{{ player.AVG | number:'1.3-3' }}</span></td> 
+        <td><span class="{{ isStatExceptional(player.HR, 30) ? 'good-stat' : '' }}">{{ player.HR }}</span></td>
+        <td><span class="{{ isStatExceptional(player.RBI, 100) ? 'good-stat' : '' }}">{{ player.RBI }}</span></td>
+        <td><span class="{{ isStatExceptional(player.SB, 30) ? 'good-stat' : '' }}">{{ player.SB }}</span></td> 
       </tr>
     </tbody>
   </table>
