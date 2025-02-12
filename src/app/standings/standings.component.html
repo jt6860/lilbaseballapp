@@ -11,6 +11,7 @@
         <th (click)="sort('Team')">Team</th>
         <th (click)="sort('W')">W</th>
         <th (click)="sort('L')">L</th>
+        <th (click)="sort('Win_pct')">Win%</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
         <td>{{ team.Team }}</td>
         <td><span class="{{ isStatExceptional(team.W, 81) ? 'good-stat' : 'bad-stat' }}">{{ team.W }}</span></td> 
         <td><span class="{{ isStatExceptional(team.L, 82) ? 'bad-stat' : 'good-stat' }}">{{ team.L }}</span></td> 
+        <td><span class="{{ isStatExceptional(team.Win_pct, .5) ? 'good-stat' : 'bad-stat' }}">{{ team.Win_pct.toFixed(3) }}</span></td> 
       </tr>
     </tbody>
   </table>

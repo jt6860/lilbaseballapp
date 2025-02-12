@@ -95,7 +95,8 @@ def get_standings(season):
                 'Team': team['Tm'],  # Use 'Tm' column if available
                 'season': season,
                 'W': team['W'],
-                'L': team['L']
+                'L': team['L'],
+                'Win_pct': int(team['W'])/162
             }
             for team in standings_df.to_dict('records')
         ]

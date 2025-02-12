@@ -42,7 +42,8 @@ export interface Standings {
   team: string,
   season: number,
   W: number,
-  L: number
+  L: number,
+  Win_pct: number
 }
 
 @Injectable({ providedIn: 'root' })
