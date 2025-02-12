@@ -1,0 +1,23 @@
+<h2>Standings</h2>
+<select [(ngModel)]="selectedSeason" (change)="loadStandings()">
+  <option *ngFor="let year of [2024, 2023, 2022, 2021]" [value]="year">
+    {{ year }}
+  </option>
+</select>
+
+<table>
+    <thead>
+      <tr>
+        <th (click)="sort('Team')">Team</th>
+        <th (click)="sort('W')">W</th>
+        <th (click)="sort('L')">L</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of sortedStandings">
+        <td>{{ team.Team }}</td>
+        <td>{{ team.W }}</td> 
+        <td>{{ team.L }}</td> 
+      </tr>
+    </tbody>
+  </table>

@@ -1,0 +1,41 @@
+<h2>Pitching Statistics</h2>
+<select [(ngModel)]="selectedSeason" (change)="loadPitcherStats()">
+  <option *ngFor="let year of [2024, 2023, 2022, 2021]" [value]="year">
+    {{ year }}
+  </option>
+</select>
+
+<table>
+    <thead>
+      <tr>
+        <th (click)="sort('name')">Name</th>
+        <th (click)="sort('Team')">Team</th>
+        <th (click)="sort('WAR')">WAR</th>
+        <th (click)="sort('IP')">IP</th>
+        <th (click)="sort('ERA')">ERA</th>
+        <th (click)="sort('W')">W</th>
+        <th (click)="sort('L')">L</th>
+        <th (click)="sort('SV')">SV</th>
+        <th (click)="sort('WHIP')">WHIP</th>
+        <th (click)="sort('K_per_9')">K/9</th>
+        <th (click)="sort('K_pct')">K%</th>
+        <th (click)="sort('LOB_pct')">LOB%</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of sortedPitchers">
+        <td>{{ player.name }}</td>
+        <td>{{ player.Team }}</td>
+        <td>{{ player.WAR }}</td> 
+        <td>{{ player.IP }}</td> 
+        <td>{{ player.ERA }}</td> 
+        <td>{{ player.W }}</td> 
+        <td>{{ player.L }}</td> 
+        <td>{{ player.SV }}</td> 
+        <td>{{ player.WHIP }}</td> 
+        <td>{{ player.K_per_9 }}</td>
+        <td>{{ player.K_pct | number:'1.3-3'  }}</td>
+        <td>{{ player.LOB_pct | number:'1.3-3'  }}</td> 
+      </tr>
+    </tbody>
+  </table>
