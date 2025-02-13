@@ -1,13 +1,19 @@
-from flask import Flask, jsonify
-from pybaseball import batting_stats, pitching_stats, cache, standings
+from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
+from flask_caching import Cache
+from pybaseball import batting_stats, pitching_stats, standings
 import pandas as pd
+import logging
+import json
 
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})  # Use 'simple' for in-memory caching
+
 CORS(app)
-cache.enable()
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 @app.route('/api/bat_stats/<int:season>')
+@cache.cached(timeout=3600, key_prefix='bat_stats')
 def get_bat_stats(season):
     try:
         imported_batstats = batting_stats(season, season)
@@ -34,12 +40,19 @@ def get_bat_stats(season):
             }
             for player in imported_batstats.to_dict('records')
         ]
-                
-        return jsonify(ingested_batstats)
+        
+        app.logger.info(f"Cache hit for batting stats: season={season}")                 
+        response = jsonify(ingested_batstats)
+        response.headers['ETag'] = generate_etag(ingested_batstats)  # Generate ETag
+
+        return response
+
     except Exception as e:
+        app.logger.error(f"Cache miss for batting stats: season={season}. Error: {e}")
         return jsonify({'error': f'Error processing batting data: {str(e)}'}), 500
 
 @app.route('/api/pitch_stats/<int:season>')
+@cache.cached(timeout=3600)
 def get_pitch_stats(season):
     try:
         imported_pitchstats = pitching_stats(season, season)
@@ -68,12 +81,19 @@ def get_pitch_stats(season):
                 }
             for player in imported_pitchstats.to_dict('records')
             ]
-        
-        return jsonify(ingested_pitchstats)
+
+        app.logger.info(f"Cache hit for pitching stats: season={season}")                         
+        response = jsonify(ingested_pitchstats)
+        response.headers['ETag'] = generate_etag(ingested_pitchstats)  # Generate ETag
+
+        return response
+
     except Exception as e:
+        app.logger.error(f"Cache miss for pitching stats: season={season}. Error: {e}")
         return jsonify({'error': f'Error processing pitching data: {str(e)}'}), 500
 
 @app.route('/api/standings/<int:season>')
+@cache.cached(timeout=3600)
 def get_standings(season):
     try:
         # Get standings data
@@ -96,15 +116,26 @@ def get_standings(season):
                 'season': season,
                 'W': team['W'],
                 'L': team['L'],
-                'Win_pct': int(team['W'])/162
+                'Win_pct': int(team['W'])/(int(team['W']) + int(team['L']))
             }
             for team in standings_df.to_dict('records')
         ]
 
-        return jsonify(ingested_standings)
+        app.logger.info(f"Cache hit for standings: season={season}")                         
+        response = jsonify(ingested_standings)
+        response.headers['ETag'] = generate_etag(ingested_standings)  # Generate ETag
+
+        return response
+
     except Exception as e:
+        app.logger.error(f"Cache miss for standings: season={season}. Error: {e}")
         return jsonify({'error': f'Error processing standings data: {str(e)}'}), 500
 
+def generate_etag(data):
+    """Generates an ETag from the provided data."""
+    import hashlib
+    data_json = json.dumps(data)
+    return hashlib.md5(data_json.encode()).hexdigest()
 
 if __name__ == '__main__':
     app.run(debug=True)
