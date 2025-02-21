@@ -2,6 +2,16 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    counter-reset: rank;
+  }
+
+  tbody tr {
+    counter-increment: rank;
+  }
+
+  tbody tr td:first-child::before {
+    content: counter(rank); /* Display the counter value */
+    margin-right: 10px; /* Add some spacing */
   }
   
   th, td {
